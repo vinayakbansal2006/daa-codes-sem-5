@@ -1,0 +1,63 @@
+#include <iostream>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+int GBN(int n, int w, set<int> lost){
+    int base = 1, sent = 0;
+    while(base <= n){
+        int end = min(base+w-1, n);
+        sent += end-base+1;
+        cout<<"Sent "<<base<<" "<<end;
+
+        auto it = lost.lower_bound(base);
+        if(it != lost.end() && *it <= end){
+            cout<<" | Frame "<<*it<<" lost -> Go back to frame "<<*it<<end<<endl;
+            base = *it;
+            lost.erase(it);
+        }else{
+            base = end+1;
+            cout<<" | All frames are ACKed"<<endl;
+        }
+    }
+    return sent;
+}
+
+int SR(int n, int w, set<int> lost){
+    int sent = 0;
+    for(int base = 1; base <= n; base+=w){
+        int end = min(base+w-1, n);
+        sent += end-base+1;
+        cout<<"Sent "<<base<<" "<<end;
+
+        auto first = lost.lower_bound(base);
+        auto last = lost.upper_bound(end);
+        if(first == last){
+            cout<<" | All frames are ACKed"<<endl;
+        }else{
+            cout<<" | Frames are lost. Resend: ";
+            for(auto it = first; it != last; it++){
+                cout<<*it<<" ";
+                sent++;
+            }
+            cout<<endl;
+        }
+    }
+    return sent;
+}
+
+int main(){
+    int n, w, k;
+    cout<<"No. of frames: "; cin>>n;
+    cout<<"Window size: "; cin>>w;
+    cout<<"No. of lost frames: "; cin>>k;
+
+    set<int> lost;
+    cout<<"Lost frames are: "; for(int i = 0; i < k; i++) {int x; cin>>x; lost.insert(x);}
+
+    cout<<"GBN"<<endl;
+    cout<<"Total transmissions = "<<GBN(n, w, lost)<<endl;
+    cout<<endl;
+    cout<<"SR"<<endl;
+    cout<<"Total transmissions = "<<SR(n, w, lost)<<endl;
+}

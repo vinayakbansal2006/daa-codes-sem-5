@@ -1,6 +1,4 @@
 #graph colouring
-
-
 def color(v):
     if v == n:
         print(c)

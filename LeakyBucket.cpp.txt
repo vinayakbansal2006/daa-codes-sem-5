@@ -1,0 +1,23 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main(){
+    int capacity, rate, k; cout<<"Enter capacity, rate, no. of packets: ";
+    cin>>capacity>>rate>>k;
+    cout<<"Enter packet size: ";
+    vector<int> packet(k); for(int i = 0; i < k; i++) cin>>packet[i];
+
+    cout<<"\nSEC\tIN\tAccepted\tSent\tLeft\tDropped\n";
+    for(int i = 0, bucket = 0; i < k || bucket > 0; i++){
+        int in = i<k? packet[i]:0;
+        bool accept = bucket+in <= capacity;
+        if(accept) bucket += in;
+        
+        int sent = min(bucket, rate);
+        bucket -= sent;
+
+        cout<<i+1<<"\t"<<in<<"\t"<<(accept? in:0)<<"\t"<<sent<<"\t"<<bucket<<"\t"<<(accept? 0:in)<<endl;
+    }
+}

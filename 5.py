@@ -1,6 +1,4 @@
 #kruskal algo
-
-
 n = int(input("Enter number of vertices: "))
 g = [list(map(int, input().split())) for i in range(n)]
 

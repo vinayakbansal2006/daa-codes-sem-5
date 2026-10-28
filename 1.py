@@ -13,7 +13,7 @@ def binary(a, low, high, key):
         return binary(a, low, mid - 1, key)
 
 a = list(map(int, input().split()))
-key = int(input())
+key = int(input("enter key "))
 
 i = binary(a, 0, len(a) - 1, key)
 

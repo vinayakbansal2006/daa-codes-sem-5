@@ -15,7 +15,7 @@ def solve(path, pos, n, graph):
     return False
 
 
-n = int(input())
+n = int(input("no of vertices"))
 graph = [list(map(int, input().split())) for i in range(n)]
 
 path = [-1] * n
